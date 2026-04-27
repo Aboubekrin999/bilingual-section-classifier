@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: lint + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Heavy ML deps (torch, transformers, etc.) are not installed in CI:
+      # the schema layer this PR exercises has no external dependencies,
+      # so CI is intentionally fast. Training jobs run on Colab/local GPUs.
+      - run: pip install pytest>=8.3 ruff>=0.6
+      - run: ruff check src tests
+      - run: pytest tests/
