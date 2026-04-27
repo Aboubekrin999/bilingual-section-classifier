@@ -1,8 +1,10 @@
 # Bilingual Paper Section Classifier (EN + FR)
 
+[![CI](https://github.com/Aboubekrin999/bilingual-section-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/Aboubekrin999/bilingual-section-classifier/actions/workflows/ci.yml)
+
 > Fine-tune a small multilingual encoder to classify scientific text passages by section type (Abstract / Introduction / Methods / Results / Discussion / Related Work / Conclusion). Targets both English and French academic prose.
 
-**Status:** Planning — training begins May 2026
+**Status:** Schema and tests in place — training begins May 2026
 
 ---
 
