@@ -51,3 +51,6 @@ wandb/
 # HF cache
 .cache/
 huggingface/
+
+# Datasets — rebuilt from pinned sources with scripts/download_data.py
+data/
