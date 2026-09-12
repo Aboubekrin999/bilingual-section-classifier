@@ -15,6 +15,7 @@ import pytest
 
 from src.hal import (
     DEFAULT_MIN_YEAR,
+    IMRAD_DOMAINS,
     looks_like_header,
     sanitise,
     HALError,
@@ -70,6 +71,22 @@ class TestBuildSearchUrl:
 
     def test_sorts_deterministically_so_paging_is_stable(self) -> None:
         assert "sort=docid+asc" in build_search_url()
+
+    def test_restricts_to_imrad_disciplines_by_default(self) -> None:
+        """HAL's French corpus is ~80% humanities, which has no IMRaD."""
+        url = build_search_url()
+        assert "level0_domain_s" in url
+        for domain in IMRAD_DOMAINS:
+            assert domain in url
+
+    def test_humanities_are_excluded_by_default(self) -> None:
+        assert "shs" not in build_search_url()
+
+    def test_domains_can_be_overridden(self) -> None:
+        assert "shs" in build_search_url(domains=("shs",))
+
+    def test_empty_domains_searches_everything(self) -> None:
+        assert "level0_domain_s" not in build_search_url(domains=())
 
     @pytest.mark.parametrize("rows", [0, -1, 1001])
     def test_rejects_out_of_range_rows(self, rows: int) -> None:
