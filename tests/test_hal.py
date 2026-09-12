@@ -16,8 +16,6 @@ import pytest
 from src.hal import (
     DEFAULT_MIN_YEAR,
     IMRAD_DOMAINS,
-    looks_like_header,
-    sanitise,
     HALError,
     Segment,
     build_search_url,
@@ -25,7 +23,9 @@ from src.hal import (
     drop_running_heads,
     header_section,
     is_usable,
+    looks_like_header,
     looks_like_text,
+    sanitise,
     search,
     segment,
     split_sentences,
