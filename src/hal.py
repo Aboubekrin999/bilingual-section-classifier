@@ -45,6 +45,15 @@ USER_AGENT = (
 #: noise. 2010 keeps ~100k French open-access articles, which is ample.
 DEFAULT_MIN_YEAR = 2010
 
+#: HAL's French open-access corpus is ~80% humanities and social sciences
+#: (112k of 140k articles), and that literature does not use IMRaD
+#: headings — it yields Introduction and Conclusion and almost no Methods
+#: or Results. Restricting to the disciplines that do structure papers as
+#: IMRaD still leaves ~28k articles, which is far more than this corpus
+#: needs, and it is the difference between a classifier that has seen
+#: "Résultats" and one that has not.
+IMRAD_DOMAINS = ("sdv", "sde", "info", "spi", "chim", "phys")
+
 #: A header line is short. Body prose that survives the other filters is
 #: usually longer than this.
 MAX_HEADER_CHARS = 70
@@ -114,6 +123,7 @@ def build_search_url(
     rows: int = 100,
     start: int = 0,
     min_year: int = DEFAULT_MIN_YEAR,
+    domains: tuple[str, ...] = IMRAD_DOMAINS,
 ) -> str:
     """URL for one page of French, open-access, full-text articles."""
     if not 1 <= rows <= 1000:
@@ -127,6 +137,10 @@ def build_search_url(
         ("fq", "openAccess_bool:true"),
         ("fq", "docType_s:ART"),
         ("fq", f"producedDateY_i:[{min_year} TO *]"),
+    ]
+    if domains:
+        params.append(("fq", f"level0_domain_s:({' OR '.join(domains)})"))
+    params += [
         ("fl", "docid,fileMain_s,producedDateY_i"),
         ("rows", str(rows)),
         ("start", str(start)),
@@ -141,10 +155,15 @@ def search(
     rows: int = 100,
     start: int = 0,
     min_year: int = DEFAULT_MIN_YEAR,
+    domains: tuple[str, ...] = IMRAD_DOMAINS,
     fetch: Fetcher = http_fetch,
 ) -> list[dict]:
     """One page of results, with documents missing a PDF dropped."""
-    body = fetch(build_search_url(rows=rows, start=start, min_year=min_year))
+    body = fetch(
+        build_search_url(
+            rows=rows, start=start, min_year=min_year, domains=domains
+        )
+    )
     try:
         payload = json.loads(body)
     except ValueError as exc:

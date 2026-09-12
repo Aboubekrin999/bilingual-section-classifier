@@ -25,6 +25,7 @@ from pathlib import Path
 
 from src.hal import (
     DEFAULT_MIN_YEAR,
+    IMRAD_DOMAINS,
     HALError,
     extract_text,
     http_fetch,
@@ -91,6 +92,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--min-year", type=int, default=DEFAULT_MIN_YEAR)
     parser.add_argument("--resume", action="store_true", help="skip known docids")
     parser.add_argument("--max-pages", type=int, default=200)
+    parser.add_argument(
+        "--domains",
+        nargs="*",
+        default=list(IMRAD_DOMAINS),
+        help="HAL level0 domains; pass none to search every discipline",
+    )
     args = parser.parse_args(argv)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -109,7 +116,10 @@ def main(argv: list[str] | None = None) -> int:
                 break
             try:
                 docs = search(
-                    rows=PAGE_SIZE, start=page * PAGE_SIZE, min_year=args.min_year
+                    rows=PAGE_SIZE,
+                    start=page * PAGE_SIZE,
+                    min_year=args.min_year,
+                    domains=tuple(args.domains),
                 )
             except HALError as exc:
                 print(f"search failed on page {page}: {exc}", file=sys.stderr)
