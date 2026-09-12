@@ -51,7 +51,7 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 **Decision.** Stratify by language *and* by class, ensuring the test set has balanced FR + EN coverage with minimum N per class per language.
 
-**Why.** Honest evaluation requires per-language F1. Imbalanced test sets hide language-specific failures. This is the single most defensible methodological choice in the project; recruiters and reviewers look for it.
+**Why.** Honest evaluation requires per-language F1. Imbalanced test sets hide language-specific failures. This is the single most defensible methodological choice in the project.
 
 **Consequences.** Slightly smaller effective training set if FR is rare. Acceptable.
 
@@ -70,7 +70,7 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 - Zero hosting cost.
 - HF Hub model card is the standard artifact ML hiring managers look for.
 - Spaces gives a live, public, clickable demo that survives long after this project is "done."
-- Matches ecosystem expectations — recruiters know what to look for.
+- Matches ecosystem expectations — reviewers know where to look.
 
 **Consequences.** Model and demo are coupled to HF's platform availability. Acceptable trade.
 
@@ -85,6 +85,6 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 **Decision.** Use W&B for runs, sweeps, and the final report.
 
-**Why.** Recruiter-readable shareable dashboards. Sweep support if hyperparameter search is needed in week 2. Public run links can be embedded in the write-up.
+**Why.** Shareable dashboards anyone can read without setup. Sweep support if hyperparameter search is needed in week 2. Public run links can be embedded in the write-up.
 
 **Consequences.** Free tier is sufficient for personal projects.
