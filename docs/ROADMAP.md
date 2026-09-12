@@ -1,9 +1,13 @@
 # 3-Week Roadmap to v1
 
 Target: trained model on Hugging Face Hub + live Spaces demo + 5-page write-up.
-Budget: ~10 hours per week, starting after [paper-companion](https://github.com/Aboubekrin999/paper-companion) v1 ships.
+> **This is the original plan, written in April 2026.** Work paused in May.
+> For what is actually built today, see the
+> [project README](../README.md#whats-built-today).
 
-Each week ends in a checkpoint that can be defended in an interview.
+Planned around roughly 10 hours a week, starting after [paper-companion](https://github.com/Aboubekrin999/paper-companion) v1 ships.
+
+Each week ends in a checkpoint that stands on its own — a dataset, a trained model, or a reproducible evaluation.
 
 ---
 

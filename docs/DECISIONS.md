@@ -68,9 +68,9 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 **Why.**
 - Zero hosting cost.
-- HF Hub model card is the standard artifact ML hiring managers look for.
-- Spaces gives a live, public, clickable demo that survives long after this project is "done."
-- Matches ecosystem expectations — reviewers know where to look.
+- A Hub model card is the conventional way to publish weights, metrics, and intended use, so anyone can evaluate the model without reading the training code.
+- Spaces gives a live, public demo that survives long after this project is "done."
+- Matches ecosystem expectations — people know where to look for a model and how to load it.
 
 **Consequences.** Model and demo are coupled to HF's platform availability. Acceptable trade.
 
@@ -87,4 +87,4 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 **Why.** Shareable dashboards anyone can read without setup. Sweep support if hyperparameter search is needed in week 2. Public run links can be embedded in the write-up.
 
-**Consequences.** Free tier is sufficient for personal projects.
+**Consequences.** The free tier covers a project at this scale.
