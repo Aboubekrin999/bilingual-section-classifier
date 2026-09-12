@@ -79,20 +79,27 @@ Work paused in May 2026 while client delivery took priority.
 
 ## Local development
 
+Running the tests needs nothing heavier than pytest, ruff and pyarrow — the
+same three packages CI installs. Torch and transformers are only needed to
+train.
+
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
+pip install "pytest>=8.3" "ruff>=0.6" "pyarrow>=18"
 
-pytest                  # 94 passed — no ML deps, no network, no GPU needed
-ruff check .
+pytest                  # 94 passed — no network, no GPU, no ML dependencies
+ruff check src tests scripts
 ```
 
-The test suite runs on fixtures, so it works on a fresh clone in under a second.
+The suite runs on fixtures, so it works on a fresh clone in under a second.
 
 ### Building the dataset
 
+The full stack — torch, transformers, datasets, wandb, gradio — installs with
+the package itself:
+
 ```bash
-pip install -e ".[ml]"
+pip install -e .
 python scripts/download_data.py     # PubMed-RCT, CSAbstruct, HAL
 python scripts/build_dataset.py     # normalize → label → stratify → Parquet
 ```
