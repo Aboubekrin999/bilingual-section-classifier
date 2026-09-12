@@ -31,7 +31,7 @@ import urllib.request
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 
-from src.labels import Section, hal_header_to_section, normalise_header
+from src.labels import Section, hal_header_to_section
 
 HAL_API = "https://api.archives-ouvertes.fr/search/"
 
@@ -77,12 +77,19 @@ _SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?=[A-ZÉÈÀÂÎÔÛÇ«\"])")
 
 #: Function words that separate French from English scientific prose.
 _FR_MARKERS = frozenset(
-    "le la les des une dun dans est sont cette nous que qui pour par sur "
-    "avec plus ainsi entre leur ses aux ont été être cet elle".split()
+    [
+        "le", "la", "les", "des", "une", "dun", "dans", "est", "sont",
+        "cette", "nous", "que", "qui", "pour", "par", "sur", "avec", "plus",
+        "ainsi", "entre", "leur", "ses", "aux", "ont", "été", "être", "cet",
+        "elle",
+    ]
 )
 _EN_MARKERS = frozenset(
-    "the of and to in is are this that we for with as by be have has "
-    "these those their from was were which".split()
+    [
+        "the", "of", "and", "to", "in", "is", "are", "this", "that", "we",
+        "for", "with", "as", "by", "be", "have", "has", "these", "those",
+        "their", "from", "was", "were", "which",
+    ]
 )
 
 Fetcher = Callable[[str], bytes]
