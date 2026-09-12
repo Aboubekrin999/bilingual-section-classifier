@@ -64,6 +64,44 @@ Defined as `Section` in [`src/labels.py`](../src/labels.py):
 
 The schema is the most consequential design decision in the project; centralising it makes it versionable, lets the mappings be unit-tested, and makes a re-run straightforward when it changes.
 
+## Measured distribution
+
+Built 2026-09-12 from the pinned sources. Reproduce with
+`python -m scripts.download_data && python -m scripts.build_dataset`.
+
+| Split | Rows |
+| --- | --- |
+| train | 153,097 |
+| val | 19,138 |
+| test | 19,138 |
+| **total** | **191,373** |
+
+| Label | train | val | test |
+| --- | ---: | ---: | ---: |
+| `methods` | 50,380 | 6,297 | 6,297 |
+| `results` | 48,299 | 6,038 | 6,038 |
+| `introduction` | 32,404 | 4,051 | 4,051 |
+| `conclusion` | 21,734 | 2,717 | 2,717 |
+| `other` | 280 | 35 | 35 |
+| `abstract` | 0 | 0 | 0 |
+| `discussion` | 0 | 0 | 0 |
+| `related_work` | 0 | 0 | 0 |
+
+`val` and `test` are identically distributed, which is the stratifier
+behaving correctly.
+
+**Three canonical labels have no examples at all.** `abstract`,
+`discussion` and `related_work` are reachable only from HAL headers, and
+the HAL scraper is not written yet. Until it is, a model trained on this
+corpus can learn five classes, not eight — and the three empty ones would
+score an undefined F1 rather than a bad one.
+
+**Language balance is 100% English (191,373 en / 0 fr).** The bilingual
+premise of this project rests entirely on the HAL source. Training on this
+corpus as it stands produces an English section classifier, so the
+per-language F1 that [ADR-003](DECISIONS.md#adr-003) exists to report has
+nothing to compare against yet.
+
 ## Known noise and limitations
 
 - **Genre skew.** PubMed-RCT and CSAbstruct are *abstracts*, not full paper sections. Sentence boundaries and section vocabulary inside an abstract differ from inside a full paper — the model may underperform on full-paper inference until HAL adds full-paper signal.

@@ -14,14 +14,19 @@ between runs.
 
 from __future__ import annotations
 
+import urllib.error
 import urllib.request
 from collections.abc import Callable
 from pathlib import Path
 
 # Pin to a known-good commit sha so the corpus is reproducible. Update
 # deliberately, with a re-run of the build + an EVAL re-run, if at all.
-_PUBMED_RCT_SHA = "39255b13ea4ecb9d35dee62de76c66b78f8acd86"
-_CSABSTRUCT_SHA = "a23a040db66ddd57b2cdde9a7081f9aa61df5f50"
+#
+# Both shas are verified to exist and to serve all six files; see
+# ``tests/test_download.py::TestPinnedSources``, which asserts the URLs are
+# well-formed, and ``scripts/verify_sources.py``, which checks them live.
+_PUBMED_RCT_SHA = "17ed2cb0590decfca0266add0c76f254f67232b4"
+_CSABSTRUCT_SHA = "cf5ad6c663550dd8203f148cd703768d9ee86ff4"
 
 PUBMED_RCT_BASE = (
     f"https://raw.githubusercontent.com/Franck-Dernoncourt/pubmed-rct/"
@@ -29,7 +34,7 @@ PUBMED_RCT_BASE = (
 )
 CSABSTRUCT_BASE = (
     f"https://raw.githubusercontent.com/allenai/sequential_sentence_classification/"
-    f"{_CSABSTRUCT_SHA}/sequential_sentence_classification/data/CSAbstruct"
+    f"{_CSABSTRUCT_SHA}/data/CSAbstruct"
 )
 
 Fetcher = Callable[[str], bytes]
@@ -40,9 +45,25 @@ class DownloadError(RuntimeError):
 
 
 def http_fetch(url: str) -> bytes:
-    """Default fetcher — single GET via ``urllib``."""
-    with urllib.request.urlopen(url, timeout=60) as response:  # noqa: S310 - well-known URLs
-        return response.read()
+    """Default fetcher — single GET via ``urllib``.
+
+    A 404 here almost always means a pinned sha or a repository path has
+    moved, so the error says that rather than surfacing a bare HTTPError
+    from six frames down.
+    """
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:  # noqa: S310 - well-known URLs
+            return response.read()
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            raise DownloadError(
+                f"{url} returned 404. The pinned commit sha or the repository "
+                f"layout has changed; re-verify with scripts/verify_sources.py "
+                f"and update the shas in this module deliberately."
+            ) from exc
+        raise DownloadError(f"{url} returned HTTP {exc.code}") from exc
+    except urllib.error.URLError as exc:
+        raise DownloadError(f"could not reach {url}: {exc.reason}") from exc
 
 
 def download_pubmed_rct(
