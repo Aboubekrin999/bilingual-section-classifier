@@ -4,7 +4,7 @@
 
 > Fine-tune a small multilingual encoder to classify scientific text passages by section type (Abstract / Introduction / Methods / Results / Discussion / Related Work / Conclusion). Targets both English and French academic prose.
 
-**Status:** Schema and tests in place — training begins May 2026
+**Status:** Data pipeline and training script complete · 94 tests green · the training run itself has not been executed. Paused May 2026; see [What's built today](#whats-built-today).
 
 ---
 
@@ -35,15 +35,35 @@ The two repos ship independently but compose.
 | Eval split | Stratified 80/10/10, **language-stratified test set** | Catches asymmetric performance |
 | Metrics | Macro-F1 overall · F1 per class · F1 per language · confusion matrix | Honest reporting beats single-number bragging |
 | Tracking | [Weights & Biases](https://wandb.ai/) | Reproducible experiments |
-| Demo | Gradio on Hugging Face Spaces | Recruiter-clickable |
+| Demo | Gradio on Hugging Face Spaces | Lets anyone test the model without cloning the repo |
 
 Detailed reasoning in [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
-## What v1 ships
+## What's built today
+
+Honest state of the repo, so you can tell the code from the plan.
+
+| Area | State |
+|---|---|
+| **Label schema** — unified section taxonomy with EN + FR source mappings | Built, tested |
+| **Source loaders** — PubMed-RCT, CSAbstruct, HAL adapters | Built, tested |
+| **Splitter** — stratified 80/10/10 with a language-stratified test set | Built, tested |
+| **Dataset build** — download → normalize → Parquet, documented in [`docs/DATA.md`](docs/DATA.md) | Built, tested |
+| **Metrics** — macro-F1, per-class F1, per-language F1, confusion matrix | Built, tested |
+| **Training script** — XLM-R fine-tune with per-language eval | Written, not yet run |
+| **Trained model on the Hub** | Not built |
+| **Gradio demo on Spaces** | Not built |
+| **Results write-up** | Not built — there are no results to report yet |
+
+94 tests pass (`pytest`). CI runs ruff and the test suite on every PR, deliberately without the heavy ML dependencies so it stays fast; training runs on Colab.
+
+Work paused in May 2026 while client delivery took priority.
+
+## What v1 will ship
 
 - Trained model on Hugging Face Hub: `Aboubekrin999/bilingual-section-classifier`
 - Live Gradio demo on Hugging Face Spaces
-- 5-page write-up: methodology, results, error analysis, language-stratified breakdown, limitations
+- Write-up: methodology, results, error analysis, language-stratified breakdown, limitations
 - Reproducibility: data prep notebooks + training script + eval harness
 
 ## Tech stack
@@ -55,14 +75,41 @@ Detailed reasoning in [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
 ## Roadmap
 
-3-week plan in [`docs/ROADMAP.md`](docs/ROADMAP.md). Starts after [paper-companion](https://github.com/Aboubekrin999/paper-companion) v1 is live (early May 2026).
+3-week plan in [`docs/ROADMAP.md`](docs/ROADMAP.md): dataset build, then training, then reproducible eval and the demo.
 
 ## Local development
 
-> Coming as data prep and training scripts land. Will document `data/` build (week 1), training (week 2), and reproducible eval (week 3).
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+
+pytest                  # 94 passed — no ML deps, no network, no GPU needed
+ruff check .
+```
+
+The test suite runs on fixtures, so it works on a fresh clone in under a second.
+
+### Building the dataset
+
+```bash
+pip install -e ".[ml]"
+python scripts/download_data.py     # PubMed-RCT, CSAbstruct, HAL
+python scripts/build_dataset.py     # normalize → label → stratify → Parquet
+```
+
+Source-by-source provenance, licensing, and the French segmentation approach are in [`docs/DATA.md`](docs/DATA.md).
+
+### Training
+
+```bash
+python scripts/train.py             # XLM-R fine-tune, logs to W&B
+python scripts/evaluate.py          # macro-F1 + per-class + per-language breakdown
+```
+
+Written for a single consumer GPU or Colab. Not yet executed — no checkpoint or results are published.
 
 ## Author
 
-**Aboubekrin Mohamed Salem** — AI Master's student, working in English and French. Building this as the depth piece of a job-search portfolio.
+**Aboubekrin Mohamed Salem** — software engineer and MSc AI candidate, Paris, working in English and French. Built to make retrieval in [paper-companion](https://github.com/Aboubekrin999/paper-companion) section-aware.
 
 GitHub: [@Aboubekrin999](https://github.com/Aboubekrin999)

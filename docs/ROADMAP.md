@@ -43,7 +43,7 @@ Each week ends in a checkpoint that can be defended in an interview.
 - [ ] Update README header with Spaces demo link + final metrics table
 - [ ] (Stretch) Plug the classifier into [paper-companion](https://github.com/Aboubekrin999/paper-companion)'s chunker as section metadata
 
-**Checkpoint.** Recruiter clicks the README, reads a clean writeup, opens the Spaces demo, types a sentence, sees a prediction. Project shippable.
+**Checkpoint.** A visitor reads the write-up, opens the Spaces demo, types a sentence, and sees a prediction. Project shippable.
 
 ---
 
