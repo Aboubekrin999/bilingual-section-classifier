@@ -4,6 +4,8 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 ---
 
+<a id="adr-001"></a>
+
 ## ADR-001 — XLM-RoBERTa-base over mBERT or larger XLM-R variants
 
 **Date:** 2026-04-27
@@ -20,9 +22,11 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 - mBERT is older and weaker on French.
 - mDeBERTa-v3 is competitive but the FR pretraining mix is less documented.
 
-**Consequences.** If macro-F1 falls short of the published baselines on PubMed-RCT, switch to XLM-R-large or mDeBERTa-v3 in week 2.
+**Consequences.** If macro-F1 falls short of the published baselines on PubMed-RCT, switch to XLM-R-large or mDeBERTa-v3.
 
 ---
+
+<a id="adr-002"></a>
 
 ## ADR-002 — Combine PubMed-RCT, CSAbstruct, and HAL-derived FR set rather than build from scratch
 
@@ -38,9 +42,11 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 - Custom data collection is the long pole. HAL FR scrape is targeted; the EN side is downloaded.
 - Builds on top of established baselines so results are interpretable.
 
-**Consequences.** Label schema must be unified across the three sources — a small amount of label-mapping work. Documented in week-1 data prep.
+**Consequences.** Label schema must be unified across the three sources — a small amount of label-mapping work. Documented in [`DATA.md`](DATA.md#canonical-label-schema).
 
 ---
+
+<a id="adr-003"></a>
 
 ## ADR-003 — Language-stratified test set
 
@@ -56,6 +62,8 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 **Consequences.** Slightly smaller effective training set if FR is rare. Acceptable.
 
 ---
+
+<a id="adr-004"></a>
 
 ## ADR-004 — Hugging Face Hub for model + Spaces for demo, not a custom hosting setup
 
@@ -76,6 +84,8 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 ---
 
+<a id="adr-005"></a>
+
 ## ADR-005 — Track everything with Weights & Biases
 
 **Date:** 2026-04-27
@@ -85,6 +95,6 @@ Lightweight ADRs. Each entry: context → decision → consequences.
 
 **Decision.** Use W&B for runs, sweeps, and the final report.
 
-**Why.** Shareable dashboards anyone can read without setup. Sweep support if hyperparameter search is needed in week 2. Public run links can be embedded in the write-up.
+**Why.** Shareable dashboards anyone can read without setup. Sweep support if hyperparameter search is needed. Public run links can be embedded in the write-up.
 
 **Consequences.** The free tier covers a project at this scale.
