@@ -62,7 +62,7 @@ Defined as `Section` in [`src/labels.py`](../src/labels.py):
 | `conclusion` | PubMed-RCT `CONCLUSIONS`, HAL `Conclusion` |
 | `other` | CSAbstruct `other`, unrecognised HAL headers |
 
-The schema is the most-disputed design decision in the project; centralising it lets us version it, test mappings, and re-run training when it changes.
+The schema is the most consequential design decision in the project; centralising it makes it versionable, lets the mappings be unit-tested, and makes a re-run straightforward when it changes.
 
 ## Known noise and limitations
 

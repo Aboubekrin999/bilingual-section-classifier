@@ -15,11 +15,11 @@ Each week ends in a checkpoint that stands on its own — a dataset, a trained m
 *Tentative: May 11 – May 17*
 
 - [ ] Download and inspect PubMed-RCT and CSAbstruct
-- [ ] Define unified label schema across both datasets (Abstract, Introduction, Methods, Results, Discussion, Related Work, Conclusion)
+- [x] Define unified label schema across both datasets (Abstract, Introduction, Methods, Results, Discussion, Related Work, Conclusion)
 - [ ] Scrape ~5–10k French sentences from HAL open-access PDFs, segmented by LaTeX section markers
 - [ ] Manual spot-check on 200 FR sentences — flag noise rate, fix segmentation rules
-- [ ] Stratified 80/10/10 split by class + language → final train/val/test parquet files
-- [ ] Data card in `docs/DATA.md`: sources, label distribution, language balance, known noise
+- [ ] Stratified 80/10/10 split by class + language → final train/val/test parquet files (splitter written and tested; not yet run on real data)
+- [x] Data card in `docs/DATA.md`: sources, label distribution, language balance, known noise
 
 **Checkpoint.** A clean, versioned dataset on disk with a documented schema. Notebook reproduces the build from raw downloads.
 
