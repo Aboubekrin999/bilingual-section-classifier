@@ -33,7 +33,7 @@ The two repos ship independently but compose.
 | Dataset (EN) | [PubMed-RCT](https://github.com/Franck-Dernoncourt/pubmed-rct) + [CSAbstruct](https://github.com/allenai/sequential_sentence_classification) | Section-tagged, well-known baselines |
 | Dataset (FR) | [HAL](https://hal.science/) open-access papers, segmented by LaTeX/PDF section markers (~5–10k labeled sentences) | Custom — fills the gap |
 | Eval split | Stratified 80/10/10, **language-stratified test set** | Catches asymmetric performance |
-| Metrics | Macro-F1 overall · F1 per class · F1 per language · confusion matrix | Honest reporting beats single-number bragging |
+| Metrics | Macro-F1 overall · F1 per class · F1 per language · confusion matrix | A single headline number hides per-class and per-language failure |
 | Tracking | [Weights & Biases](https://wandb.ai/) | Reproducible experiments |
 | Demo | Gradio on Hugging Face Spaces | Lets anyone test the model without cloning the repo |
 
@@ -117,6 +117,8 @@ Written for a single consumer GPU or Colab. Not yet executed — no checkpoint o
 
 ## Author
 
-**Aboubekrin Mohamed Salem** — software engineer and MSc AI candidate, Paris, working in English and French. Built to make retrieval in [paper-companion](https://github.com/Aboubekrin999/paper-companion) section-aware.
+**Aboubekrin Mohamed Salem** — software engineer, Paris, working in English and French.
+
+Built to make retrieval in [paper-companion](https://github.com/Aboubekrin999/paper-companion) section-aware, and to learn transformer fine-tuning properly: constructing a dataset rather than downloading one, designing a label schema that holds across two languages, and evaluating in a way that exposes per-language weakness instead of averaging it away. Reasoning in [`docs/DECISIONS.md`](docs/DECISIONS.md).
 
 GitHub: [@Aboubekrin999](https://github.com/Aboubekrin999)
